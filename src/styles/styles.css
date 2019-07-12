@@ -1,0 +1,270 @@
+html,
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.fighters {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    flex-wrap: wrap;
+    padding: 0 15px;
+}
+
+.fighter_wrapper input {
+    width: 100%;
+    text-align: center;
+}
+
+.fighter {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.fighter:hover {
+    box-shadow: 0 0 50px 10px rgba(0,0,0,0.06);
+    cursor: pointer;
+}
+
+.name {
+    align-self: center;
+    font-size: 21px;
+    margin-top: 20px;
+}
+
+.fighter-image {
+    height: 100px;
+    object-fit: contain;
+}
+
+#loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.7);
+    visibility: hidden;
+}
+
+.start-fight {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    outline: 0;
+    border: 1px solid rgba(200,0,0,1);
+    cursor: pointer;
+    font-size: 2em;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(to bottom, rgba(220,220,220,1) 0%, rgba(200,60,10,1) 10%, rgba(200,0,0,1) 20%, rgba(200,0,0,1) 80%, rgba(200,60,10,1) 90%, rgba(220,220,220,1) 100%);
+    border-radius: 25% 25% 25% 25%/50% 50% 50% 50%;
+}
+
+/*BATTLE*/
+.battlefield {
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fighter1-wrapper,
+.fighter2-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.fighter2 {
+    transform: scaleX(-1);
+}
+
+.fighter1-health,
+.fighter2-health {
+    width: 10em;
+    margin-bottom: 20px;
+}
+
+.fighter2-health {
+    margin-left: auto;
+}
+
+.fighter1,
+.fighter2 {
+    height: 450px;
+    object-fit: contain;
+}
+
+.damage-indicator {
+    position: absolute;
+    top: 35%; 
+    left: 50%;
+    font-family: sans-serif;
+    font-size: 2em;
+    color: #fff;
+    -webkit-text-stroke: 1px #f00;
+    text-align: center;
+    animation: hit .8s linear forwards;
+    z-index: 1;
+}
+
+@keyframes hit {
+    0% {
+        transform: scale(0);
+    }
+    25% {
+        transform: scale(1.5);
+    }
+    50% {
+        transform: scale(2);
+    }
+    80% {
+        opacity: 1;
+    }
+    99% {
+        transform: scale(4);
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.fightLogo {
+    width: 20%;
+    object-fit: contain;
+    z-index: 1;
+    animation: appear 2s linear forwards;
+}
+
+.winner {
+    font-family: sans-serif;
+    font-size: 2em;
+    white-space: nowrap;
+    -webkit-text-stroke: 1px #f00;
+    color: #ff0;
+    animation: appear 4.5s linear forwards;
+    z-index: 1;
+}
+
+@keyframes appear {
+    0% {
+        transform: scale(0);
+    }
+    25% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(3);
+    }
+    80% {
+        opacity: 1;
+    }
+    99% {
+        transform: scale(2);
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.left-kick {
+    animation: left-kick .8s ease-out;
+}
+
+@keyframes left-kick {
+    0% {
+        transform: translateX(0px);
+    }
+    50% {
+        transform: translateX(50px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+.right-kick {
+    animation: right-kick .8s ease-out;
+}
+
+@keyframes right-kick {
+    0% {
+        transform: translateX(0px) scaleX(-1);
+    }
+    50% {
+        transform: translateX(-50px) scaleX(-1);
+    }
+    100% {
+        transform: translateX(0px) scaleX(-1);
+    }
+}
+
+.damage {
+    animation: damage .8s ease-out;
+}
+
+@keyframes damage {
+    0% {
+        box-shadow: none;
+    }
+    50% {
+        box-shadow: 0px 0px 8px 8px rgba(230,28,28,1);
+    }
+    100% {
+        box-shadow: none;
+    }
+}
+
+/*MODAL WINDOW*/
+.modal {
+    padding: 25px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: .5rem;
+}
+
+.modal > label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.modal > h4 {
+    margin: 0;
+    text-align: center;
+}
+
+.modal input {
+    display: block;
+    width: 100%;
+}
+
+.modal button {
+    text-align: center;
+    width: 100%;
+}
+
+.overlay {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0, .25);
+}
