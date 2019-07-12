@@ -1,4 +1,4 @@
-import { getRandomChance } from './helpers/getRandom.ts';
+import { getRandomChance } from './helpers/getRandom';
 
 interface IFighter {
   _id: number,
@@ -26,18 +26,18 @@ class Fighter implements IFighter {
     this.source = source;
   }
 
-  getHitPower(enemy: Fighter): number {
+  public getHitPower(enemy: Fighter): number {
     const power = this.attack * getRandomChance();
     const damage = enemy.setDamage(power);
     return damage > 0 ? damage : 0;
   }
 
-  getBlockPower(): number {
+  public getBlockPower(): number {
     const power = this.defense * getRandomChance();
     return power;
   }
 
-  setDamage(power: number): number {
+  public setDamage(power: number): number {
     const damage = Math.floor(power - this.getBlockPower());
     this.health -= damage > 0 ? damage : 0;
     return damage;

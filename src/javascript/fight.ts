@@ -1,5 +1,5 @@
-import View from './view.ts';
-import { Fighter, IFighter } from './fighter.ts';
+import View from './view';
+import { Fighter, IFighter } from './fighter';
 import * as FightLogo from '../assets/fight.png';
 import * as roundSound from '../assets/audio/round.mp3';
 import * as koSound from '../assets/audio/ko.mp3';
@@ -24,7 +24,7 @@ class Fight extends View implements IFight {
     this.sounds = [littleKick, littlePunch, bigPunch];
   }
 
-  createMeter(fighter: Fighter, className: string): HTMLElement {
+  private createMeter(fighter: Fighter, className: string): HTMLElement {
     const attributes = { 
       min: '0',
       max: fighter.health,
@@ -33,7 +33,7 @@ class Fight extends View implements IFight {
       optimum: fighter.health,
       value: fighter.health
     };
-    const meterElement = this.createElement({
+    const meterElement = super.createElement({
       tagName: 'meter',
       className,
       attributes
@@ -42,32 +42,32 @@ class Fight extends View implements IFight {
     return meterElement;
   }
 
-  playSound(sound: any) {
+  private playSound(sound: any) {
     (new Audio(sound)).play();
   }
 
-  playRandomKickSound() {
+  private playRandomKickSound() {
     const randomSound = Math.floor(Math.random() * this.sounds.length);
     (new Audio(this.sounds[randomSound])).play();
   }
 
-  prepareForFight() {
+  public prepareForFight() {
     Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(el => (el as HTMLInputElement).disabled = true);
     document.querySelector('button').remove();
     const rootElement = document.getElementById('root');
-    this.element = this.createElement({ tagName: 'div', className: 'battlefield' });
-    const fighter1Wrapper = this.createElement({ tagName: 'div', className: 'fighter1-wrapper' });
-    const fighter2Wrapper = this.createElement({ tagName: 'div', className: 'fighter2-wrapper' });
+    this.element = super.createElement({ tagName: 'div', className: 'battlefield' });
+    const fighter1Wrapper = super.createElement({ tagName: 'div', className: 'fighter1-wrapper' });
+    const fighter2Wrapper = super.createElement({ tagName: 'div', className: 'fighter2-wrapper' });
 
     const fighter1Health = this.createMeter(this.fighter1, 'fighter1-health');
-    const fighter1 = this.createElement({ tagName: 'img', className: 'fighter1', attributes: { src: this.fighter1.source } });
+    const fighter1 = super.createElement({ tagName: 'img', className: 'fighter1', attributes: { src: this.fighter1.source } });
     fighter1Wrapper.append(fighter1Health, fighter1);
 
     const fighter2Health = this.createMeter(this.fighter2, 'fighter2-health');
-    const fighter2 = this.createElement({ tagName: 'img', className: 'fighter2', attributes: { src: this.fighter2.source } });
+    const fighter2 = super.createElement({ tagName: 'img', className: 'fighter2', attributes: { src: this.fighter2.source } });
     fighter2Wrapper.append(fighter2Health, fighter2);
 
-    const fightImg = this.createElement({ tagName: 'img', className: 'fightLogo', attributes: { src: FightLogo } });
+    const fightImg = super.createElement({ tagName: 'img', className: 'fightLogo', attributes: { src: FightLogo } });
     this.element.append(fighter1Wrapper, fightImg, fighter2Wrapper);
     rootElement.after(this.element);
 
@@ -78,13 +78,13 @@ class Fight extends View implements IFight {
     }, 2500);
   };
 
-  startFight() {
+  private startFight() {
     if(this.fighter1.health > 0) {
       const fighter1Element = document.querySelector('.fighter1');
       const fighter2Element = document.querySelector('.fighter2');
       const fighter1Health = document.querySelector('.fighter1-health');
       const fighter2Health = document.querySelector('.fighter2-health');
-      const fighter2DamageIndicator = this.createElement({ tagName: 'div', className: 'damage-indicator' });
+      const fighter2DamageIndicator = super.createElement({ tagName: 'div', className: 'damage-indicator' });
 
       fighter1Element.classList.add('left-kick');
       fighter2Element.classList.add('damage');
@@ -100,7 +100,7 @@ class Fight extends View implements IFight {
         fighter2Element.classList.remove('damage');
         
         if(this.fighter2.health > 0) {
-          const fighter1DamageIndicator = this.createElement({ tagName: 'div', className: 'damage-indicator' });
+          const fighter1DamageIndicator = super.createElement({ tagName: 'div', className: 'damage-indicator' });
           fighter2Element.classList.add('right-kick');
           fighter1Element.classList.add('damage');
           const fighter1Damage = this.fighter2.getHitPower(this.fighter1);
@@ -125,10 +125,10 @@ class Fight extends View implements IFight {
     }
   }
 
-  finishFight(winner: Fighter) {
+  private finishFight(winner: Fighter) {
     Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(el => (el as HTMLInputElement).checked = false);
 
-    const winnerElement = this.createElement({ tagName: 'div', className: 'winner' });
+    const winnerElement = super.createElement({ tagName: 'div', className: 'winner' });
     winnerElement.innerText = `${winner.name} wins!`;
     const fightLogo = document.querySelector('.fightLogo');
     fightLogo.replaceWith(winnerElement);

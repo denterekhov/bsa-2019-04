@@ -1,12 +1,10 @@
-import View from './view.ts';
-import FighterView from './fighterView.ts';
-import { Fighter } from './fighter.ts';
-import Fight from './fight.ts';
+import View from './view';
+import FighterView from './fighterView';
+import { Fighter } from './fighter';
+import Fight from './fight';
 import { fighterService } from './services/fightersService';
 
 class FightersView extends View {
-  public element: HTMLElement
-
   constructor(fighters: [Fighter, Fighter]) {
     super();
     
@@ -17,23 +15,23 @@ class FightersView extends View {
 
   private fightersDetailsMap = new Map();
 
-  createFighters(fighters: [Fighter, Fighter]) {
+  private createFighters(fighters: [Fighter, Fighter]) {
     const fighterElements = fighters.map((fighter: Fighter) => {
       const fighterView = new FighterView(fighter, this.handleFighterClick, this.handleFighterCheckboxClick);
       return fighterView.element;
     });
 
-    this.element = this.createElement({ tagName: 'div', className: 'fighters' });
+    this.element = super.createElement({ tagName: 'div', className: 'fighters' });
     this.element.append(...fighterElements);
   }
 
-  async handleFighterClick(event: Event, fighter: Fighter) {
+  private async handleFighterClick(event: MouseEvent, fighter: Fighter) {
     await this.checkIfFighterExist(fighter);
     const fighterInfo = this.fightersDetailsMap.get(fighter._id);
     this.showModal(fighterInfo);
   }
 
-  async handleFighterCheckboxClick(event: Event, fighter: Fighter) {
+  private async handleFighterCheckboxClick(event: MouseEvent, fighter: Fighter) {
     await this.checkIfFighterExist(fighter);
 
     if (this.getCheckedCheckboxLength() === 2) {
@@ -41,7 +39,7 @@ class FightersView extends View {
       const checkboxIds = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(el => el.id);
       const fightersForFight = Array.from(this.fightersDetailsMap.values()).filter(fighter => checkboxIds.includes(fighter._id));
       const rootElement = document.getElementById('root');
-      const buttonElement = this.createElement({ tagName: 'button', className: 'start-fight' });
+      const buttonElement = super.createElement({ tagName: 'button', className: 'start-fight' });
       buttonElement.innerText = 'FIGHT!';
       const fight = new Fight(fightersForFight);
       buttonElement.addEventListener('click', () => fight.prepareForFight());
@@ -54,38 +52,38 @@ class FightersView extends View {
     };
   }
 
-  getCheckedCheckboxLength() {
+  private getCheckedCheckboxLength() {
     return Array.from(document.querySelectorAll('input[type=checkbox]:checked')).length;
   }
 
-  setCheckboxStatus(status: boolean) {
+  private setCheckboxStatus(status: boolean) {
     return Array.from(document.querySelectorAll('input[type=checkbox]:not(:checked)')).forEach(el => (el as HTMLInputElement).disabled = status);
   }
 
-  async checkIfFighterExist(fighter: Fighter) {
+  private async checkIfFighterExist(fighter: Fighter) {
     if(!this.fightersDetailsMap.get(fighter._id)) {
       const fullFighterInfo = await fighterService.getFighterDetails(fighter._id);
       this.fightersDetailsMap.set(fullFighterInfo._id, fullFighterInfo);
     };
   }
 
-  showModal({ _id, name, source, ...charStats}: { _id: number, name: string, source: string, charStats: number[]}) {
-    const overlay = this.createElement({ tagName: 'div', className: 'overlay' });
-    const modal = this.createElement({ tagName: 'div', className: 'modal' });
-    const headerElement = this.createElement({ tagName: 'h4' });
+  private showModal({ _id, name, source, ...charStats}: { _id: number, name: string, source: string, charStats: number[]}) {
+    const overlay = super.createElement({ tagName: 'div', className: 'overlay' });
+    const modal = super.createElement({ tagName: 'div', className: 'modal' });
+    const headerElement = super.createElement({ tagName: 'h4' });
     headerElement.innerText = name;
     modal.append(headerElement);
 
     for (const [key, value] of Object.entries(charStats)) {
-      const labelElement = this.createElement({ tagName: 'label' });
+      const labelElement = super.createElement({ tagName: 'label' });
       const text = document.createTextNode(`${key}:`);
-      const inputElement = this.createElement({ tagName: 'input', attributes: { type: 'number', min: '0', name: key, value: value} });
+      const inputElement = super.createElement({ tagName: 'input', attributes: { type: 'number', min: '0', name: key, value: value} });
       labelElement.append(text, inputElement);
       modal.append(labelElement);
     }
 
     const text = document.createTextNode('Save stats');
-    const submitElement = this.createElement({ tagName: 'button' });
+    const submitElement = super.createElement({ tagName: 'button' });
 
     submitElement.addEventListener('click', () => {
       const obj = {};
